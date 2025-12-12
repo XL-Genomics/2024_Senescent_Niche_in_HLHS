@@ -41,7 +41,7 @@ rownames(full.srt@reductions$scVI@cell.embeddings) <- Cells(full.srt)
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ####  MiloR Process  ####
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~----
-RunMilo <- function(seurat, k = 20, d = 50, alpha = 0.1, prop = 0.2){
+RunMilo <- function(seurat, k = 20, d = 50, alpha = 0.05, prop = 0.2){
         sce <- as.SingleCellExperiment(seurat)
         milo.meta <- seurat@meta.data
         milo.obj <- Milo(sce)
@@ -85,7 +85,7 @@ p.list <- list()
 for(i in 1:6){
         message(i)
         milo_out[[i]] <- RunMilo(srt.list[[i]], k = k.list[i], prop = prop.list[i])
-        p.list[[i]] <- plotNhoodGraphDA(milo_out[[i]][[1]], milo_res = milo_out[[i]][[2]], alpha = 0.1) +
+        p.list[[i]] <- plotNhoodGraphDA(milo_out[[i]][[1]], milo_res = milo_out[[i]][[2]]) +
                 scale_fill_distiller(palette = 'RdBu')
         gc()
         PlotPDF(paste0('1.', i, '.umap.', name.list[i], '_milo_result'), 8, 6)
@@ -120,7 +120,7 @@ p.list <- list()
 for(i in 1:6){
         message(i)
         milo_out[[i]] <- RunMilo(srt.list[[i]], k = k.list[i], prop = prop.list[i])
-        p.list[[i]] <- plotNhoodGraphDA(milo_out[[i]][[1]], milo_res = milo_out[[i]][[2]], alpha = 0.1) +
+        p.list[[i]] <- plotNhoodGraphDA(milo_out[[i]][[1]], milo_res = milo_out[[i]][[2]]) +
                 scale_fill_distiller(palette = 'RdBu')
         gc()
         PlotPDF(paste0('2.', i, '.umap.', name.list[i], '_milo_result'), 8, 6)
@@ -136,7 +136,7 @@ for(i in 1:6){
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ####  Milo global HLHS vs Control  ####
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-RunMilo <- function(seurat, k = 20, d = 50, alpha = 0.1, prop = 0.2){
+RunMilo <- function(seurat, k = 20, d = 50, alpha = 0.05, prop = 0.2){
         sce <- as.SingleCellExperiment(seurat)
         milo.meta <- seurat@meta.data
         milo.obj <- Milo(sce)
@@ -164,8 +164,8 @@ tmp.srt$group2 <- droplevels(tmp.srt$group2)
 tmp.srt$group1 <- droplevels(tmp.srt$group1)
 Table(tmp.srt$group1, tmp.srt$group2)
 
-milo_out <- RunMilo(tmp.srt, k = 20, d = 50, alpha = 0.2, prop = 0.5)
-p <- plotNhoodGraphDA.my(milo_out[[1]], milo_res = milo_out[[2]], alpha = 0.5) +
+milo_out <- RunMilo(tmp.srt, k = 20, d = 50, prop = 0.5)
+p <- plotNhoodGraphDA.my(milo_out[[1]], milo_res = milo_out[[2]]) +
         scale_fill_distiller(palette = 'RdBu') +
         theme(aspect.ratio = 1, axis.line = element_line())
 p
@@ -190,8 +190,8 @@ Table(tmp.srt$group1, tmp.srt$group2)
 
 tmp.srt$group2 <- factor(tmp.srt$group2, levels = c('VAD', 'HLHS'))
 
-milo_out <- RunMilo(tmp.srt, k = 20, d = 50, alpha = 0.2, prop = 0.5)
-p <- plotNhoodGraphDA.my(milo_out[[1]], milo_res = milo_out[[2]], alpha = 0.5)  +
+milo_out <- RunMilo(tmp.srt, k = 20, d = 50, prop = 0.5)
+p <- plotNhoodGraphDA.my(milo_out[[1]], milo_res = milo_out[[2]])  +
         scale_fill_distiller(palette = 'RdBu') +
         theme(aspect.ratio = 1, axis.line = element_line())
 p
